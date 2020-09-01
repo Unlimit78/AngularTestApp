@@ -9,6 +9,7 @@
     <input type="checkbox" class="Completed" [checked]="todo.completed" >
     <span *ngIf="!todo.completed">{{todo.title}}</span>
     <span *ngIf="todo.completed"><del>{{todo.title}}</del></span>
+    <button (click)="DeleteTask(todo.id)">Delete</button>
 
   </li>
 

@@ -1,6 +1,10 @@
 from rest_framework.response import Response
-from rest_framework import  serializers, viewsets
+from rest_framework import  serializers, viewsets,status
 from rest_framework import generics
+from rest_framework.views import APIView
+
+from django.http import Http404
+
 from .models import  Task
 
 
@@ -23,3 +27,20 @@ class TaskList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         serializer = TaskSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class TaskDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = TaskSerializer(snippet)
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

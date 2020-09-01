@@ -38,12 +38,21 @@ export class AppComponent implements OnInit{
 
       }
       this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/',this.data).subscribe(todo => {
-        console.log(this.title);
+
       this.todolist.push(todo);
 
     })
 
     }
+  }
+
+  DeleteTask(id):void{
+
+    this.httpClient.delete<TodoInterface>('http://127.0.0.1:8000/'+id).subscribe(todo => {
+        this.ngOnInit();
+
+
+    })
   }
 
 }
