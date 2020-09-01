@@ -10,6 +10,8 @@ import {TodoInterface} from "./todoInterface";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  public title = '';
+  public data = {};
   public todolist  :TodoInterface[];
   private httpClient : HttpClient;
   httpHeaders = new HttpHeaders({
@@ -21,10 +23,27 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void{
-    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/task/',{headers:this.httpHeaders}).subscribe(todolist => {
+    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/',{headers: this.httpHeaders}).subscribe(todolist => {
       this.todolist = todolist;
 
     })
 
   }
+
+  CreateTask():void {
+    if(this.title){
+      this.data = {
+        title:this.title,
+        completed: false,
+
+      }
+      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/',this.data).subscribe(todo => {
+        console.log(this.title);
+      this.todolist.push(todo);
+
+    })
+
+    }
+  }
+
 }

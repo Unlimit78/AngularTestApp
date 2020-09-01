@@ -1,12 +1,15 @@
-<form>
+<form (ngSubmit)="CreateTask()">
   <p>
-    <input type="text" placeholder="task">
-    <input type="button" value="Add" >
+    <input type="text" placeholder="task" name="title" [(ngModel)]="title">
+    <input type="submit" value="Add" >
   </p>
 </form>
 <ul class="task-list">
   <li *ngFor="let todo of todolist">
-    <input type="checkbox" class="Completed"><span>{{todo.title}}</span>
+    <input type="checkbox" class="Completed" [checked]="todo.completed" >
+    <span *ngIf="!todo.completed">{{todo.title}}</span>
+    <span *ngIf="todo.completed"><del>{{todo.title}}</del></span>
+
   </li>
 
 </ul>
