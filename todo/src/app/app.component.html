@@ -1,3 +1,5 @@
+<div *ngIf="!formOpened">
+
 
   <form (ngSubmit)="CreateTask()">
   <p>
@@ -6,13 +8,22 @@
   </p>
 </form>
 
-
+</div>
+<div *ngIf="formOpened">
+  <form (ngSubmit)="ChangeTitle()">
+    <p>
+      <input type="text" placeholder="task" name="title" [(ngModel)]="title">
+      <input type="submit" value="Change" >
+    </p>
+  </form>
+</div>
 <ul class="task-list">
   <li *ngFor="let todo of todolist">
     <input type="checkbox" class="Completed" [checked]="todo.completed" (change)="ChangeStatus(todo)" >
-    <span *ngIf="!todo.completed">{{todo.title}}</span>
+    <span *ngIf="!todo.completed" >{{todo.title}}</span>
     <span *ngIf="todo.completed"><del>{{todo.title}}</del></span>
     <button (click)="DeleteTask(todo.id)">Delete</button>
+    <button (click)="ChangeTitleForm(true,todo)">Change</button>
 
   </li>
 

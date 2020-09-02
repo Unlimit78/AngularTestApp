@@ -10,8 +10,14 @@ import {TodoInterface} from "./todoInterface";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  public title = '';
-  public data = {};
+  public formOpened : false;
+
+  public todo :{
+    id:number,
+    title:string
+  }
+  public title : '';
+  public data : {};
   public todolist  :TodoInterface[];
   private httpClient : HttpClient;
   httpHeaders = new HttpHeaders({
@@ -63,6 +69,32 @@ export class AppComponent implements OnInit{
 
 
     })
+  }
+
+  ChangeTitleForm(formOpened,todo):void {
+
+    this.todo = todo;
+
+
+
+    this.formOpened = formOpened;
+
+
+
+  }
+
+  ChangeTitle():void{
+
+    if(this.title){
+      this.todo.title = this.title;
+      this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/'+this.todo.id+'/',this.todo).subscribe(todo => {
+        this.ngOnInit();
+
+
+
+    })
+    }
+    this.formOpened = false;
   }
 
 }
