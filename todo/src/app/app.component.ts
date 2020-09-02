@@ -23,7 +23,7 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void{
-    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/',{headers: this.httpHeaders}).subscribe(todolist => {
+    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/api',{headers: this.httpHeaders}).subscribe(todolist => {
       this.todolist = todolist;
 
     })
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit{
         completed: false,
 
       }
-      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/',this.data).subscribe(todo => {
+      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/api',this.data).subscribe(todo => {
 
       this.todolist.push(todo);
 
@@ -48,7 +48,17 @@ export class AppComponent implements OnInit{
 
   DeleteTask(id):void{
 
-    this.httpClient.delete<TodoInterface>('http://127.0.0.1:8000/'+id).subscribe(todo => {
+    this.httpClient.delete<TodoInterface>('http://127.0.0.1:8000/api/'+id).subscribe(todo => {
+        this.ngOnInit();
+
+
+    })
+  }
+
+  ChangeStatus(todo): void{
+
+    todo.completed = !todo.completed;
+    this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/'+todo.id+'/',todo).subscribe(todo => {
         this.ngOnInit();
 
 
