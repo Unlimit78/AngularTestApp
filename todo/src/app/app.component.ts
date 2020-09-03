@@ -43,13 +43,15 @@ export class AppComponent implements OnInit{
         completed: false,
 
       }
-      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/api',this.data).subscribe(todo => {
+      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/api/',this.data).subscribe(todo => {
 
       this.todolist.push(todo);
 
     })
 
+
     }
+    this.title = '';
   }
 
   DeleteTask(id):void{
@@ -94,6 +96,7 @@ export class AppComponent implements OnInit{
 
     })
     }
+    this.title = '';
     this.formOpened = false;
   }
 

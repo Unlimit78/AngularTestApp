@@ -1,30 +1,42 @@
-<div *ngIf="!formOpened">
+<div class="main">
+  <div *ngIf="!formOpened" class="form">
 
 
   <form (ngSubmit)="CreateTask()">
-  <p>
-    <input type="text" placeholder="task" name="title" [(ngModel)]="title">
+
+    <input type="text" placeholder="Task" name="title" [(ngModel)]="title">
     <input type="submit" value="Add" >
-  </p>
-</form>
+
+  </form>
 
 </div>
-<div *ngIf="formOpened">
+  <div *ngIf="formOpened" class="form">
   <form (ngSubmit)="ChangeTitle()">
-    <p>
-      <input type="text" placeholder="task" name="title" [(ngModel)]="title">
+
+      <input type="text" placeholder="Task" name="title" [(ngModel)]="title">
       <input type="submit" value="Change" >
-    </p>
+
   </form>
 </div>
-<ul class="task-list">
-  <li *ngFor="let todo of todolist">
-    <input type="checkbox" class="Completed" [checked]="todo.completed" (change)="ChangeStatus(todo)" >
-    <span *ngIf="!todo.completed" >{{todo.title}}</span>
-    <span *ngIf="todo.completed"><del>{{todo.title}}</del></span>
-    <button (click)="DeleteTask(todo.id)">Delete</button>
-    <button (click)="ChangeTitleForm(true,todo)">Change</button>
+  <ul class="task-list">
+  <li *ngFor="let todo of todolist" class="task-list-item">
+
+      <div class="task-text">
+      <i *ngIf="!todo.completed" class="far fa-check-circle" id="notChecked" (click)="ChangeStatus(todo)"></i>
+      <i *ngIf="todo.completed" class="far fa-check-circle" id="Checked" (click)="ChangeStatus(todo)"></i>
+
+      <span  *ngIf="!todo.completed" >{{todo.title}}</span>
+      <span  *ngIf="todo.completed"><del>{{todo.title}}</del></span>
+      </div>
+      <div class="Edit-Delete">
+        <i class="far fa-edit" id="Edit" (click)="ChangeTitleForm(true,todo)"></i>
+        <i class="far fa-trash-alt" id="Delete"(click)="DeleteTask(todo.id)"></i>
+      </div>
+
 
   </li>
 
+
+
 </ul>
+</div>
