@@ -3,6 +3,7 @@ html,body{
 	width:100%;
 	height:100%;
 
+
 }
 
 
@@ -10,14 +11,26 @@ html,body{
 
 .main{
   display: flex;
+
+  width:100%;
+  height: 100%;
+  position: relative;
+
+  margin: 0 ;
+  overflow-x: hidden;
+
+}
+.block{
+
+  display: flex;
   flex-direction: column;
   width:100%;
   height: 100%;
   position: relative;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 ;
+  overflow-x: hidden;
 }
-
 .form{
   width:50%;
   padding: 10px;
@@ -116,4 +129,31 @@ html,body{
 }
 #Edit:hover{
   color:orange;
+}
+.Done{
+  color:greenyellow;
+}
+
+
+@media screen and (max-width: 768px){
+
+  .form{
+    width:100%;
+
+
+
+  }
+  .task-list{
+    width: 100%;
+
+
+
+  }
+  .block{
+    padding: 0px 10px 0 10px;
+  }
+  .task-list-item{
+    font-size: 10px;
+  }
+
 }

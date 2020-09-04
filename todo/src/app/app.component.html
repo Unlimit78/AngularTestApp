@@ -1,4 +1,5 @@
 <div class="main">
+  <div class="block">
   <div *ngIf="!formOpened" class="form">
 
 
@@ -25,8 +26,8 @@
       <i *ngIf="!todo.completed" class="far fa-check-circle" id="notChecked" (click)="ChangeStatus(todo)"></i>
       <i *ngIf="todo.completed" class="far fa-check-circle" id="Checked" (click)="ChangeStatus(todo)"></i>
 
-      <span  *ngIf="!todo.completed" >{{todo.title}}</span>
-      <span  *ngIf="todo.completed"><del>{{todo.title}}</del></span>
+      <span  *ngIf="!todo.completed" class="notDone">{{todo.title}}</span>
+      <span  *ngIf="todo.completed" class="Done"><del>{{todo.title}}</del></span>
       </div>
       <div class="Edit-Delete">
         <i class="far fa-edit" id="Edit" (click)="ChangeTitleForm(true,todo)"></i>
@@ -39,4 +40,5 @@
 
 
 </ul>
+  </div>
 </div>
