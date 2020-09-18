@@ -2,61 +2,125 @@ import { Component,OnInit } from '@angular/core';
 
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import get = Reflect.get;
-import {TodoInterface} from "./todoInterface";
+import {CategoryInterFace, TodoInterface} from "./todoInterface";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+
+
 export class AppComponent implements OnInit{
   public formOpened : false;
 
   public todo :{
     id:number,
-    title:string
+    title:string,
+    category:number,
+    completed:boolean
   }
   public title : '';
   public data : {};
+  public categoryData:{};
+
   public todolist  :TodoInterface[];
+  public chosenCategory: number;
+  public newCategory:string;
+  public categories: CategoryInterFace[];
+
+
   private httpClient : HttpClient;
   httpHeaders = new HttpHeaders({
     'Content-Type':'application/json'
   })
+
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
-
+    this.chosenCategory = 1;
   }
 
+
   ngOnInit(): void{
-    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/api',{headers: this.httpHeaders}).subscribe(todolist => {
+    this.httpClient.get<TodoInterface[]>('http://127.0.0.1:8000/api/task',{headers: this.httpHeaders}).subscribe(todolist => {
       this.todolist = todolist;
 
+
+    })
+    this.httpClient.get<CategoryInterFace[]>('http://127.0.0.1:8000/api/category',{headers:this.httpHeaders}).subscribe(categories=>{
+      this.categories = categories;
     })
 
   }
 
-  CreateTask():void {
-    if(this.title){
+  ChangeCategory():void{
+    if(this.title) {
+      this.categoryData = {
+        name: this.newCategory
+      }
+      if (!this.categories.find(x=>x.name===this.newCategory)) {
+        this.httpClient.post<CategoryInterFace>('http://127.0.0.1:8000/api/category/', this.categoryData).subscribe(category => {
+
+          this.categories.push(category);
+          this.ChangeTitle(category);
+
+
+        })
+      }
+      else{
+        this.ChangeTitle(this.categories.find(x=>x.name===this.newCategory))
+      }
+    }
+  }
+
+  CreateCategory():void{
+    if(this.title) {
+      this.categoryData = {
+        name: this.newCategory
+      }
+      if (!this.categories.find(x=>x.name===this.newCategory)) {
+        this.httpClient.post<CategoryInterFace>('http://127.0.0.1:8000/api/category/', this.categoryData).subscribe(category => {
+
+          this.categories.push(category);
+          this.CreateTask(category);
+
+
+        })
+      }
+      else{
+        this.CreateTask(this.categories.find(x=>x.name===this.newCategory))
+      }
+    }
+
+
+  }
+
+  CreateTask(category):void {
+
+
       this.data = {
         title:this.title,
-        completed: false,
-
+        completed: category.name==='Done' ? true : false,
+        category: category.id
       }
-      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/api/',this.data).subscribe(todo => {
+
+
+      this.httpClient.post<TodoInterface>('http://127.0.0.1:8000/api/task/',this.data).subscribe(todo => {
 
       this.todolist.push(todo);
 
     })
 
 
-    }
+
     this.title = '';
+      this.newCategory ='';
   }
 
-  DeleteTask(id):void{
-
-    this.httpClient.delete<TodoInterface>('http://127.0.0.1:8000/api/'+id).subscribe(todo => {
+  DeleteTask(todo):void{
+    todo.category = this.categories.find(x=>x.name==='Deleted').id;
+    this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/task/'+todo.id+'/',todo).subscribe(todo => {
         this.ngOnInit();
 
 
@@ -66,11 +130,20 @@ export class AppComponent implements OnInit{
   ChangeStatus(todo): void{
 
     todo.completed = !todo.completed;
-    this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/'+todo.id+'/',todo).subscribe(todo => {
+    if (todo.completed){
+      todo.category = this.categories.find(x=>x.name==='Done').id  ;
+    }
+    else{
+      todo.category = this.categories.find(x=>x.name==='In progress').id;
+    }
+
+
+    this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/task/'+todo.id+'/',todo).subscribe(todo => {
         this.ngOnInit();
 
 
     })
+
   }
 
   ChangeTitleForm(formOpened,todo):void {
@@ -85,11 +158,14 @@ export class AppComponent implements OnInit{
 
   }
 
-  ChangeTitle():void{
+  ChangeTitle(category):void{
 
     if(this.title){
       this.todo.title = this.title;
-      this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/'+this.todo.id+'/',this.todo).subscribe(todo => {
+      this.todo.category = category.id;
+      this.todo.completed = category.name==='Done' ? true : false,
+
+      this.httpClient.put<TodoInterface>('http://127.0.0.1:8000/api/task/'+this.todo.id+'/',this.todo).subscribe(todo => {
         this.ngOnInit();
 
 
@@ -97,6 +173,7 @@ export class AppComponent implements OnInit{
     })
     }
     this.title = '';
+    this.newCategory = '';
     this.formOpened = false;
   }
 

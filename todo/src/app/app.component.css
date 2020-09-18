@@ -24,7 +24,7 @@ html,body{
 
   display: flex;
   flex-direction: column;
-  width:100%;
+  width:50%;
   height: 100%;
   position: relative;
   align-items: center;
@@ -32,7 +32,7 @@ html,body{
   overflow-x: hidden;
 }
 .form{
-  width:50%;
+  width:100%;
   padding: 10px;
   background: #2F3238;
   border-radius: 0.4em;
@@ -73,7 +73,7 @@ html,body{
 
 .task-list{
   display: flex;
-  width:50%;
+  width:100%;
   flex-direction: column;
 
   align-items: center;
@@ -134,9 +134,59 @@ html,body{
   color:greenyellow;
 }
 
+.categories{
+  display: flex;
+  width:25%;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  padding:15px;
+}
+.category-list{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 10px;
+  margin: 0;
+  background: #2F3238;
+  border: 1px solid #191919;
+  box-shadow:inset 0 0 2px 1px rgba(255,255,255,0.08), 0 16px 10px -8px rgba(0,0,0 ,0.6);
+
+}
+.category-list-item{
+  display: flex;
+  width:100%;
+  flex-direction: row;
+  color:white;
+  padding: 10px 0 10px 0 ;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #191919;
+  box-shadow:inset 0 0 2px 1px rgba(255,255,255,0.08), 0 16px 10px -8px rgba(0,0,0 ,0.6);
+  cursor: pointer;
+  justify-content: center;
+}
+.category-list-item:hover{
+  color:deepskyblue;
+}
+.choose-categories{
+  width: 70%;
+  padding:10px 8px;
+  font-size: 15px;
+  background: linear-gradient(#1f2124, #27292c);
+  border: 1px solid deepskyblue;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+  border-radius: 3px;
+  color:white;
+}
+
 
 @media screen and (max-width: 768px){
 
+  .main{
+    flex-direction: column;
+
+  }
   .form{
     width:100%;
 
@@ -145,15 +195,23 @@ html,body{
   }
   .task-list{
     width: 100%;
+    padding: 0;
 
 
+
+
+  }
+  
+  .categories{
+    width: 100%;
+    padding: 0;
 
   }
   .block{
-    padding: 0px 10px 0 10px;
-  }
-  .task-list-item{
-    font-size: 10px;
+
+    width:100%;
+
+
   }
 
 }

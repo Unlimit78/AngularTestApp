@@ -1,43 +1,77 @@
 <div class="main">
+  <div class="categories">
+
+    <ul class="category-list">
+
+  <li *ngFor="let category of categories" class="category-list-item" (click)="chosenCategory=category.id">
+
+
+
+
+      <span>{{category.name}}</span>
+
+
+
+
+
+
+  </li>
+
+
+
+  </ul>
+  </div>
   <div class="block">
   <div *ngIf="!formOpened" class="form">
 
 
-  <form (ngSubmit)="CreateTask()">
+  <form (ngSubmit)="CreateCategory()">
 
     <input type="text" placeholder="Task" name="title" [(ngModel)]="title">
+    <input list="categories" name="categories" [(ngModel)]="newCategory" class="choose-categories" placeholder="Category">
+    <datalist id="categories">
+      <option *ngFor="let category of categories">{{category.name}}</option>
+    </datalist>
+
     <input type="submit" value="Add" >
 
   </form>
 
 </div>
   <div *ngIf="formOpened" class="form">
-  <form (ngSubmit)="ChangeTitle()">
+  <form (ngSubmit)="ChangeCategory()">
 
       <input type="text" placeholder="Task" name="title" [(ngModel)]="title">
+      <input list="categories" name="categories" [(ngModel)]="newCategory" class="choose-categories" placeholder="Category">
+    <datalist id="categories">
+      <option *ngFor="let category of categories">{{category.name}}</option>
+    </datalist>
       <input type="submit" value="Change" >
 
   </form>
 </div>
-  <ul class="task-list">
-  <li *ngFor="let todo of todolist" class="task-list-item">
+  <ul class="task-list" >
 
-      <div class="task-text">
+    <ng-container *ngFor="let todo of todolist">
+  <li  *ngIf="todo.category==chosenCategory" class="task-list-item" >
+
+      <div  class="task-text">
       <i *ngIf="!todo.completed" class="far fa-check-circle" id="notChecked" (click)="ChangeStatus(todo)"></i>
       <i *ngIf="todo.completed" class="far fa-check-circle" id="Checked" (click)="ChangeStatus(todo)"></i>
 
       <span  *ngIf="!todo.completed" class="notDone">{{todo.title}}</span>
       <span  *ngIf="todo.completed" class="Done"><del>{{todo.title}}</del></span>
+
       </div>
       <div class="Edit-Delete">
         <i class="far fa-edit" id="Edit" (click)="ChangeTitleForm(true,todo)"></i>
-        <i class="far fa-trash-alt" id="Delete"(click)="DeleteTask(todo.id)"></i>
+        <i class="far fa-trash-alt" id="Delete"(click)="DeleteTask(todo)"></i>
       </div>
 
 
   </li>
 
-
+    </ng-container>
 
 </ul>
   </div>
